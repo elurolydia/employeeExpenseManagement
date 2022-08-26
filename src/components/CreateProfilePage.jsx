@@ -2,32 +2,33 @@ import React from 'react';
 import Profile from "./Profile";
 
 
-const CreateProfilePage = () => {
+const CreateProfilePage = ({onChange, inputValues, submit}) => {
+
   return (
-    <div className='form'>
+    <form className='form'>
         <div>
             <Profile />
         </div>
         <div className='formInputs'> 
             <div>
                 <label htmlFor="name" className='label'>Name</label>
-                <input type="text" placeholder="Type name" name='name' className='input'/>
-            </div>
-            <div>
-                <label htmlFor="department" className='label'>Department</label>
-                <input type="text" placeholder="Type department" name='department' className='input'/>
-            </div>
-            <div>
-                <label htmlFor="location" className='label'>Location</label>
-                <input type="text" placeholder="Type location" name='location' className='input'/>
+                <input type="text" placeholder="Type name" name='name' className='input' onChange={onChange} value={inputValues.name} required/>
             </div>
             <div>
                 <label htmlFor="jobDescription" className='label'>Job Description</label>
-                <textarea type="text" placeholder="Type job description" name='jobDescription' className='input textarea'/>
+                <textarea type="text" placeholder="Type job description" name='jobDescription' className='input textarea' onChange={onChange} value={inputValues.jobDescription} required/>
             </div>
-            <button className='formButton'>Create Employee Profile</button>
+            <div>
+                <label htmlFor="location" className='label'>Location</label>
+                <input type="text" placeholder="Type location" name='location' className='input' onChange={onChange} value={inputValues.location} required/>
+            </div>
+            <div>
+                <label htmlFor="department" className='label'>Department</label>
+                <input type="text" placeholder="Type department" name='department' className='input' onChange={onChange} value={inputValues.department} required/>
+            </div>
+            <button className='formButton' onClick={submit}>Create Employee Profile</button>
         </div>
-    </div>
+    </form>
   )
 }
 

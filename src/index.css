@@ -62,9 +62,9 @@ nav p {
   /* top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);  */
-  border-radius: 50%;
+  border-radius: 20px;
   overflow: hidden;
-  border: 1px solid #8A2CB6;
+  border: 1px dotted #8A2CB6;
 }
 
 #photo {
@@ -134,8 +134,11 @@ nav p {
 }
 
 .textarea {
+  box-sizing: border-box;
   height: 80px;
   padding-top: 10px;
+  padding-bottom: 10px;
+  /* margin-bottom: 5px; */
 }
 
 .formButton {
@@ -156,6 +159,11 @@ nav p {
   font-size: 15px;
   line-height: 18px;
   color: #FFFFFF;
+}
+
+
+.welcome {
+  margin-top: 120px;
 }
 
 
