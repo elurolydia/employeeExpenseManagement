@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 
-export default function Profile () {
-    const [image, setImage] = useState("https://raw.githubusercontent.com/OlgaKoplik/CodePen/master/profile.jpg")
+export default function Profile ({image, changeImage}) {
+    
     const [showUploadButton, setShowUploadButton] = useState(false);
 
     function mouseEnter () { 
@@ -17,18 +17,7 @@ export default function Profile () {
         )
     };
 
-    function changeImage (e) {
-        const chosenFile = e.target.files[0];
-        if (chosenFile) {
-            const reader = new FileReader();
     
-            reader.addEventListener('load', function(){
-                setImage(reader.result);
-            })
-    
-            reader.readAsDataURL(chosenFile);
-        }
-    }
 
     return (
         <div className="profilePicDiv" onMouseEnter={mouseEnter} onMouseLeave= {mouseLeave}>

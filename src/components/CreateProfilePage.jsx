@@ -2,12 +2,12 @@ import React from 'react';
 import Profile from "./Profile";
 
 
-const CreateProfilePage = ({onChange, inputValues, submit}) => {
+const CreateProfilePage = ({onChange, inputValues, submit, image, changeImage}) => {
 
   return (
     <form className='form'>
         <div>
-            <Profile />
+            <Profile  image={image} changeImage={changeImage}/>
         </div>
         <div className='formInputs'> 
             <div>

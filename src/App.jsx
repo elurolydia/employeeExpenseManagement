@@ -6,6 +6,22 @@ import EmployeeExpensePage from "./components/EmployeeExpensePage";
 
 
 function App() {
+  const [image, setImage] = useState("https://raw.githubusercontent.com/OlgaKoplik/CodePen/master/profile.jpg")
+  
+  function changeImage (e) {
+    const chosenFile = e.target.files[0];
+    if (chosenFile) {
+        const reader = new FileReader();
+
+        reader.addEventListener('load', function(){
+            setImage(reader.result);
+        })
+
+        reader.readAsDataURL(chosenFile);
+    }
+  }
+  
+  
   const [inputValues, setInputValues] = useState({
     name: "",
     jobDescription: "",
@@ -13,7 +29,7 @@ function App() {
     department: ""
   })
 
-  const [readyToRoute, setReadyToRoute] = useState(false)
+  const [readyToRoute, setReadyToRoute] = useState(true)
 
   function inputChange (e) {
     const {name, value} = e.target;
@@ -23,7 +39,7 @@ function App() {
 
   function submit (e) {
     e.preventdefault; 
-    
+
     if (inputValues.name && inputValues.jobDescription && inputValues.location && inputValues.department) {
       setReadyToRoute(true)
     }
@@ -34,8 +50,8 @@ function App() {
       <Navbar />
       { 
         readyToRoute ? 
-        <EmployeeExpensePage /> :
-        <CreateProfilePage  onChange = {inputChange} inputValues={inputValues} submit={submit}/> 
+        <EmployeeExpensePage image={image} name={inputValues.name} job={inputValues.jobDescription} location={inputValues.location} department={inputValues.department}/> :
+        <CreateProfilePage  onChange = {inputChange} inputValues={inputValues} submit={submit} image={image} changeImage={changeImage}/> 
       }
     </div>
   )
