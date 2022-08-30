@@ -29,7 +29,7 @@ function App() {
     department: ""
   })
 
-  const [readyToRoute, setReadyToRoute] = useState(true)
+  const [readyToRoute, setReadyToRoute] = useState(false)
 
   function inputChange (e) {
     const {name, value} = e.target;
