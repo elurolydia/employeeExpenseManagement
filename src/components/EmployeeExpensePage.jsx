@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react'
-import Location from '../images/Location.png'
-import './page2.css'
+import React, { useState, useEffect, Fragment } from 'react';
+import { nanoid } from "nanoid";
+import Location from '../images/Location.png';
+import infoData from './data';
+import './page2.css';
+import EditableRow from './EditableRow';
 
 const EmployeeExpensePage = ({image, name, job, location, department}) => {
 
   const [formInput, setFormInput] = useState({
+    id:nanoid(),
     date: '',
     merchant: '',
     amount: '',
@@ -12,7 +16,7 @@ const EmployeeExpensePage = ({image, name, job, location, department}) => {
     comment: ''
   })
 
-  const [data, setData] = useState ([]);
+  const [data, setData] = useState (infoData);
   const [filteredData, setFilteredData] = useState ([]);
   
   // console.log(formInput)
@@ -27,10 +31,9 @@ const EmployeeExpensePage = ({image, name, job, location, department}) => {
     setData(prev => { 
       return [...prev, formInput]
     })
-    
-    
 
     setFormInput({
+      id: '',
       date: '',
       merchant: '',
       amount: '',
@@ -54,7 +57,7 @@ const EmployeeExpensePage = ({image, name, job, location, department}) => {
     
 
   const [topDisplay, setTopDisplay] = useState('none')
-  const [state, setState] = useState(<div></div>);
+  // const [state, setState] = useState(<div></div>);
 
   const [filterInput, setFilterInput] = useState({
     from: '',
@@ -68,7 +71,7 @@ const EmployeeExpensePage = ({image, name, job, location, department}) => {
   function filterInputChange (e) {
     const {name, value} = e.target;
 
-    setFilterInput (prev => ({...prev, [name] : value}))
+    setFilterInput (prev => ({...prev, [name] : value})) 
   }
 
   // console.log(data);
@@ -78,77 +81,49 @@ const EmployeeExpensePage = ({image, name, job, location, department}) => {
 
     setTopDisplay(value);
     
-    if (value === 'none'){setState(<div></div>); setFilterInput({from: ' ', to: ' ', merchant: ' ', amountFrom: ' ', amountTo: ' ', status: ' '})}
+    if (value === 'none'){
+      setFilterInput({from: ' ', to: ' ', merchant: ' ', amountFrom: 0, amountTo: 0, status: ' '})
+      setFilteredData([])
+    }
     else if (value === 'date'){
-      setState(<div style={{display: 'flex', gap:'40px'}}>
-        <div>
-          <label htmlFor="from" style={{marginRight: '12px'}}>From:</label>
-          <input type="date" id='from' name='from'  onChange={filterInputChange} style={{width:'150px',height:'35px', borderRadius:'5px', paddingLeft:'5px'}}/>
-        </div>
-        <div>
-          <label htmlFor="to" style={{marginRight: '12px'}}>To:</label>
-          <input type="date" id='to' name='to' onChange={filterInputChange} style={{width:'150px', height:'35px', borderRadius:'5px', paddingLeft:'5px'}} />
-        </div>
-      </div>); setFilterInput({merchant: ' ', amountFrom: ' ', amountTo: ' ', status: ' '})
+      setFilterInput((prev)=> { return {...prev, merchant: ' ', amountFrom: 0, amountTo: 0, status: ' '}})
     }
     else if (value === 'merchant'){
-      setState( <div>
-          <select name="merchant" id="merchant" onChange={filterInputChange} style={{width:'200px', height:'35px',borderRadius:'5px', paddingLeft:'5px'}} >
-            <option value="">Choose</option>
-            <option value="Parking">Parking</option>
-            <option value="Breakfast">Breakfast</option>
-            <option value="Electronics">Electronics</option>
-            <option value="Airline">Airline</option>
-            <option value="Restaurant">Restaurant</option>
-            <option value="Shuttle">Shuttle</option>
-            <option value="Taxi">Taxi</option>
-            <option value="Fast Food">Fast Food</option>
-            <option value="Hotel">Hotel</option>
-            <option value="Rental Car">Rental Car</option>
-            <option value="Office supplies">Office Supplies</option>
-          </select>
-      </div>); setFilterInput({from: ' ', to: ' ', amountFrom: ' ', amountTo: ' ', status: ' '})
+      setFilterInput((prev)=> { return {...prev, from: ' ', to: ' ', amountFrom: 0, amountTo: 0, status:0}})
     }
     else if (value === 'amount') {
-      setState(<div style={{display: 'flex', gap:'40px'}}>
-        <div>
-          <label htmlFor="amountFrom" style={{marginRight: '12px'}}>From:</label>
-          <input type="number" id='amountFrom' name='amountFrom' onChange={filterInputChange} style={{width:'150px',height:'35px', borderRadius:'5px', paddingLeft:'5px'}} />
-        </div>
-        <div>
-          <label htmlFor="amountTo" style={{marginRight: '12px'}}>To:</label>
-          <input type="number" id='amountTo'name='amountTo' onChange={filterInputChange} style={{width:'150px', height:'35px', borderRadius:'5px', paddingLeft:'5px'}} />
-        </div>
-      </div>); setFilterInput({from: ' ', to: ' ', merchant: ' ', status: ' '})
+      setFilterInput((prev)=> { return {...prev,from: ' ', to: ' ', merchant: ' ', status: ' '}})
     }
     else if (value === 'status') {
-      setState(<div>
-        <select name="status" id="status" onChange={filterInputChange} style={{width:'200px', height:'35px',borderRadius:'5px', paddingLeft:'5px'}}> 
-            <option value="">Choose</option>
-            <option value="New">New</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Reimbursed">Reimbursed</option>
-          </select>
-      </div>); setFilterInput({from: ' ', to: ' ', merchant: ' ', amountFrom: ' ', amountTo: ' '})
+      setFilterInput((prev)=> { return {...prev, from: ' ', to: ' ', merchant: ' ', amountFrom: 0, amountTo: 0}})
     }
   }
 
-  const ele = data.map(val => {return val})
-  useEffect(()=> {
-    if(filterInput.from && filterInput.to){
-      setFilteredData(ele.filter(el=>{if (el.date>=filterInput.from && el.date<=filterInput.to){return el}}))  
-    }
-    else if(filterInput.merchant){
-      setFilteredData(ele.filter(el=>{if (el.merchant === filterInput.merchant){return el}}))  
-    }
-    else if(filterInput.amountFrom && filterInput.amountTo){
-      setFilteredData(ele.filter(el=>{if (el.amount>=filterInput.amountFrom && el.amount<= filterInput.amountTo){return el}}))  
-    }
-    else if(filterInput.status){
-      setFilteredData(ele.filter(el=>{if (el.status === filterInput.status){return el}}))  
-    }
-  },[elements])
+  const ele = data.map(val => {return val});
 
+  function check (e) {
+    e.preventDefault();
+
+    let fil= [];
+    
+
+    if((topDisplay==='date') && filterInput.from && filterInput.to){
+      fil = ele.filter(el=>{if (el.date>=filterInput.from && el.date<=filterInput.to){return el}});
+    }
+    else if(topDisplay==='merchant' && filterInput.merchant){
+      fil = ele.filter(el=>{if (el.merchant === filterInput.merchant){return el}});
+    }
+    else if((topDisplay==='amount') && filterInput.amountFrom && filterInput.amountTo){
+      fil = ele.filter(el=>{if (el.amount>=parseInt(filterInput.amountFrom) && el.amount<=parseInt(filterInput.amountTo)){return el}});  
+    }
+    else if (topDisplay==='status' && filterInput.status){
+      fil = ele.filter(el=>{if (el.status === filterInput.status){return el}});
+    }
+
+    setFilteredData(fil)
+
+  }
+  
 
   useEffect(()=> {
     let sum = 0;
@@ -166,12 +141,120 @@ const EmployeeExpensePage = ({image, name, job, location, department}) => {
     }
     
     setTotal(topDisplay === 'none' ? sum : filteredSum)
-  },[elements])
+  },[elements, data, filteredData])
 
-  // console.log(filteredData)
-  // console.log(data)
-  // console.log(ele)
-  console
+
+  
+
+
+const [editValId, setEditValId] = useState(null);
+
+const [editFormData, setEditFormData] = useState({
+  date: '',
+  merchant: '',
+  amount: '',
+  status: '',
+  comment: ''
+})
+
+const handleEditClick = (event, val) => {
+  event.preventDefault();
+  setEditValId(val.id);
+
+  const formValues = {
+    date: val.date,
+    merchant: val.merchant,
+    amount: val.amount,
+    status: val.status,
+    comment: val.comment
+  }
+
+  setEditFormData(formValues);
+}
+
+
+function handleEditFormChange (event) {
+  event.preventDefault();
+
+  const {name,value} = event.target
+
+  const newFormData = {...editFormData}
+  newFormData[name] = value;
+
+  setEditFormData(newFormData);
+}
+
+
+
+function handleEditFormSubmit (event) {
+  event.preventDefault();
+
+  const editedContact = {
+    id: editValId,
+    date: editFormData.date,
+    merchant: editFormData.merchant,
+    amount: editFormData.amount,
+    status: editFormData.status,
+    comment: editFormData.comment
+  }
+
+  const newData = [...data];
+  
+  const index = data.findIndex((val)=> val.id === editValId)
+  newData[index] = editedContact;
+
+  if (topDisplay !== 'none') {
+    const newFilteredData = [...filteredData];
+  
+    const Findex = filteredData.findIndex((val)=> val.id === editValId)
+    newFilteredData[Findex] = editedContact;
+  
+    setFilteredData(newFilteredData);
+    setEditValId(null);
+
+    // if((topDisplay==='date') && filterInput.from && filterInput.to){
+    //   fil = newFilteredData.filter(el=>{if (el.date>=filterInput.from && el.date<=filterInput.to){return el}});
+    // }
+    // else if(topDisplay==='merchant' && filterInput.merchant){
+    //   fil = newFilteredData.filter(el=>{if (el.merchant === filterInput.merchant){return el}});
+    // }
+    // else if((topDisplay==='amount') && filterInput.amountFrom && filterInput.amountTo){
+    //   fil = newFilteredData.filter(el=>{if (el.amount>=parseInt(filterInput.amountFrom) && el.amount<=parseInt(filterInput.amountTo)){return el}});  
+    // }
+    // else if (topDisplay==='status' && filterInput.status){
+    //   fil = newFilteredData.filter(el=>{if (el.status === filterInput.status){return el}});
+    // }
+
+    // setFilteredData(fil)
+  }
+
+  setData(newData);
+  setEditValId(null);
+}
+
+function handleCancelClick () {
+  setEditValId(null);
+}
+
+
+function handleDeleteClick (valId) {
+  const newDataInfo = [...data];
+  const index = data.findIndex((val) => val.id === valId);
+
+  newDataInfo.splice(index, 1);
+
+  if (topDisplay !== 'none') {
+    const newFilteredDataInfo = [...filteredData];
+    const Findex = filteredData.findIndex((val) => val.id === valId);
+
+    newFilteredDataInfo.splice(Findex, 1)
+
+    setFilteredData(newFilteredDataInfo)
+  }
+
+  setData(newDataInfo);
+}
+
   return (
     <div className='page2'>
         <form  name='form' className='expenseForm' onSubmit={fillTable}>
@@ -189,9 +272,10 @@ const EmployeeExpensePage = ({image, name, job, location, department}) => {
             <option value="Restaurant">Restaurant</option>
             <option value="Shuttle">Shuttle</option>
             <option value="Taxi">Taxi</option>
-            <option value="Fast Food">Fast Food</option>
+            <option value="Fast food">Fast food</option>
             <option value="Hotel">Hotel</option>
             <option value="Rental Car">Rental Car</option>
+            <option value="Ride sharing">Ride sharing</option>
             <option value="Office supplies">Office Supplies</option>
           </select>
           <br />
@@ -223,68 +307,133 @@ const EmployeeExpensePage = ({image, name, job, location, department}) => {
                 <option value="status">Status</option>
               </select>
             </div>
-            <div>{state}</div>
+            <form>
+              {topDisplay === 'none'&& <div></div>}
+              {topDisplay === 'date'&& <div className='appearingDiv'>
+                <div>
+                  <label htmlFor="from" style={{marginRight: '9px'}}>From:</label>
+                  <input type="date" id='from' name='from' 
+                  value={filterInput.from} 
+                  onChange={filterInputChange} 
+                  style={{ width:'115px',height:'30px', borderRadius:'5px', paddingLeft:'5px'}}/>
+                </div>
+                <div>
+                  <label htmlFor="to" style={{marginRight: '9px'}}>To:</label>
+                  <input type="date" id='to' name='to' value={filterInput.to} onChange={filterInputChange} style={{width:'115px', height:'30px', borderRadius:'5px', paddingLeft:'5px'}} />
+                </div>
+                <button onClick={check}>GO</button>
+              </div>}
+              {topDisplay === 'merchant'&& <div style={{display: 'flex', gap:'25px'}}>
+                  <select name="merchant" id="merchant" 
+                  value={filterInput.merchant} 
+                  onChange={filterInputChange} 
+                  style={{width:'200px', height:'35px',borderRadius:'5px', paddingLeft:'5px'}} >
+                    <option value="">Choose</option>
+                    <option value="Parking">Parking</option>
+                    <option value="Breakfast">Breakfast</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Airline">Airline</option>
+                    <option value="Restaurant">Restaurant</option>
+                    <option value="Shuttle">Shuttle</option>
+                    <option value="Taxi">Taxi</option>
+                    <option value="Fast food">Fast food</option>
+                    <option value="Hotel">Hotel</option>
+                    <option value="Rental Car">Rental Car</option>
+                    <option value="Ride sharing">Ride sharing</option>
+                    <option value="Office supplies">Office Supplies</option>
+                  </select>
+                  <button onClick={check}>GO</button>
+              </div>}
+              {topDisplay === 'amount' && <div className='appearingDiv'>
+                    <div>
+                      <label htmlFor="amountFrom" style={{marginRight: '9px'}}>From:</label>
+                      <input type="number" id='amountFrom' name='amountFrom' value={filterInput.amountFrom} onChange={filterInputChange} style={{ width:'115px',height:'30px', borderRadius:'5px', paddingLeft:'5px'}} />
+                    </div>
+                    <div>
+                      <label htmlFor="amountTo" style={{marginRight: '9px'}}>To:</label>
+                      <input type="number" id='amountTo'name='amountTo' value={filterInput.amountTo} onChange={filterInputChange} style={{width:'115px', height:'30px', borderRadius:'5px', paddingLeft:'5px'}} />
+                    </div>
+                    <button onClick={check}>GO</button>
+              </div>}
+              {topDisplay === 'status' && <div style={{display: 'flex', gap:'25px'}}>
+                    <select name="status" id="status" onChange={filterInputChange} style={{width:'200px', height:'35px',borderRadius:'5px', paddingLeft:'5px'}}> 
+                      <option value="">Choose</option>
+                      <option value="New">New</option>
+                      <option value="In Progress">In Progress</option>
+                      <option value="Reimbursed">Reimbursed</option>
+                    </select>
+                    <button onClick={check}>GO</button>
+              </div>}
+            </form>
             <div className='total'>TOTAL =  ₦{total.toLocaleString("en-US")} 
             </div>
           </div>
 
           <div className='table'>
-            <table>
-              <thead>
-              <tr>
-                <th>S/N</th>
-                <th>Date</th>
-                <th>Merchant</th>
-                <th>Amount(₦)</th>
-                <th>Status</th>
-                <th>Comment</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                <td>1</td>
-                <td>29/08/2022</td>
-                <td>Airline</td>
-                <td>31,000</td>
-                <td>In Progress</td>
-                <td>Business trip</td>
-              </tr>
-              <tr>
-                <td>99</td>
-                <td>29/08/2022</td>
-                <td>Restaurant</td>
-                <td>31,000</td>
-                <td>Reimbursed</td>
-                <td>Business trip</td>
-              </tr>
-                {topDisplay === 'none'? 
-                data.map((val, key) => {
-                  return (
-                    <tr key={key}>
-                      <td>{key + 1}</td>
-                      <td>{val.date}</td>
-                      <td>{val.merchant}</td>
-                      <td>{parseInt(val.amount).toLocaleString("en-US")}</td>
-                      <td>{val.status}</td>
-                      <td>{val.comment}</td>
-                    </tr>
-                  )
-                }):
-                filteredData.map((val, key) => {
-                  return (
-                    <tr key={key}>
-                      <td>{key + 1}</td>
-                      <td>{val.date}</td>
-                      <td>{val.merchant}</td>
-                      <td>{parseInt(val.amount).toLocaleString("en-US")}</td>
-                      <td>{val.status}</td>
-                      <td>{val.comment}</td>
-                    </tr>
-                  )
-                })
-              }
-              </tbody>
-            </table>
+            <form onSubmit={handleEditFormSubmit}>
+              <table>
+                <thead>
+                <tr>
+                  {/* <th>S/N</th> */}
+                  <th>Date</th>
+                  <th>Merchant</th>
+                  <th>Amount(₦)</th>
+                  <th>Status</th>
+                  <th>Comment</th>
+                  <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                  {topDisplay === 'none'? 
+                  data.map((val, id) => {
+                    return (
+                      <Fragment>
+                        {editValId === val.id ?  (
+                          <EditableRow editFormData={editFormData} handleEditFormChange={handleEditFormChange} handleCancelClick={handleCancelClick} />
+                        ) : ( 
+                          <tr key={id}>
+                            {/* <td>{id + 1}</td> */}
+                            <td>{val.date}</td>
+                            <td>{val.merchant}</td>
+                            <td>{parseInt(val.amount).toLocaleString("en-US")}</td>
+                            <td>{val.status}</td>
+                            <td>{val.comment}</td>
+                            <td className='twoButtons'>
+                              <button  type='button' onClick={(event)=> handleEditClick(event, val)}>Edit</button>
+                              <button type='button' onClick={()=> handleDeleteClick(val.id)}>Delete</button>
+                            </td>
+                          </tr> 
+                      )}
+                      </Fragment>
+                    )
+                  }):
+                  filteredData.map((val, id) => {
+                    return (
+                      <Fragment>
+                        {editValId === val.id ?  (
+                          <EditableRow editFormData={editFormData} handleEditFormChange={handleEditFormChange} handleCancelClick={handleCancelClick} />
+                        ) : ( 
+                          <tr key={id}>
+                            {/* <td>{id + 1}</td> */}
+                            <td>{val.date}</td>
+                            <td>{val.merchant}</td>
+                            <td>{parseInt(val.amount).toLocaleString("en-US")}</td>
+                            <td>{val.status}</td>
+                            <td>{val.comment}</td>
+                            <td className='twoButtons'>
+                              <button  type='button' onClick={(event)=> handleEditClick(event, val)}>Edit</button>
+                              <button type='button' onClick={()=> handleDeleteClick(val.id)}>Delete</button>
+                            </td>
+                          </tr> 
+                      )}
+                      </Fragment>
+
+                    )
+                  })
+                }
+                </tbody>
+              </table>
+            </form>
           </div>
 
           <div className='employeeCard'>
@@ -295,7 +444,6 @@ const EmployeeExpensePage = ({image, name, job, location, department}) => {
             <p className='small'><img src={Location} alt='Icon'/>{location}</p>
             <p className='dept'>{department}</p>
           </div>
-        
     </div>
   )
 }
@@ -305,5 +453,3 @@ export default EmployeeExpensePage
 
 
 
-{/* <input type="checkbox" checked={boolean state} onchange={} name='friendly'/>
-<label htmlFor='is friendly'></label> */}
