@@ -85,8 +85,6 @@
     grid-column: 2 / span 2;
     grid-row: 1;
     display: flex;
-    /* width: 1200px; */
-    /* flex-direction: column; */
     box-sizing: border-box;
     height: 60px;
     background: #FFFFFF;
@@ -148,7 +146,7 @@
     box-sizing: border-box;
     overflow-y: auto;
     overflow-x: auto;
-    width: auto;
+    /* width: 100%; */
     height: 66vh;
 }
 
@@ -158,20 +156,12 @@ table {
     padding: 20px;
     border-collapse: collapse;
     table-layout: fixed;
-    width: 80%;  
+    width: 100%;  
 }
 
 tr {
-    height: 40px;
+    height: 40px;    
 }
-
-/* tr :hover {
-    background-color: #FBFBFB;;
-} */
-
-/* th:first-child {
-    width: 45px;
-} */
 
 th:first-child{
     width: 120px;
@@ -198,9 +188,6 @@ th:last-child {
     
 }
 
-/* td:last-child {
-} */
-
 th, td {
     background-color: #FFFFFF;
     padding: 8px;
@@ -208,12 +195,8 @@ th, td {
     border-bottom: 1px solid #ddd;
     overflow: hidden;
     font-size: 0.92em;
-    /* line-height: 24px; */
     color: #333333;
     text-overflow: ellipsis;
-    /* width: 100px; */
-    /* width: 30px; */
-    /* margin: 10px 20px; */
 }
 
 .editDate {
@@ -241,6 +224,12 @@ th, td {
 .twoButtons {
     display: flex;
     gap: 10px;
+    height: 40px;
+    align-items: center;
+}
+
+.twoButtons button {
+    height: 25px;
 }
 
 .employeeCard {

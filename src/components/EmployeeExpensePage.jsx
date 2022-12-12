@@ -387,11 +387,11 @@ function handleDeleteClick (valId) {
                   {topDisplay === 'none'? 
                   data.map((val, id) => {
                     return (
-                      <Fragment>
+                      <Fragment key={val.id}>
                         {editValId === val.id ?  (
-                          <EditableRow editFormData={editFormData} handleEditFormChange={handleEditFormChange} handleCancelClick={handleCancelClick} />
+                          <EditableRow  editFormData={editFormData} handleEditFormChange={handleEditFormChange} handleCancelClick={handleCancelClick} />
                         ) : ( 
-                          <tr key={id}>
+                          <tr>
                             {/* <td>{id + 1}</td> */}
                             <td>{val.date}</td>
                             <td>{val.merchant}</td>
@@ -409,11 +409,11 @@ function handleDeleteClick (valId) {
                   }):
                   filteredData.map((val, id) => {
                     return (
-                      <Fragment>
+                      <Fragment key={val.id}>
                         {editValId === val.id ?  (
-                          <EditableRow editFormData={editFormData} handleEditFormChange={handleEditFormChange} handleCancelClick={handleCancelClick} />
+                          <EditableRow  editFormData={editFormData} handleEditFormChange={handleEditFormChange} handleCancelClick={handleCancelClick} />
                         ) : ( 
-                          <tr key={id}>
+                          <tr>
                             {/* <td>{id + 1}</td> */}
                             <td>{val.date}</td>
                             <td>{val.merchant}</td>
